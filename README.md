@@ -6,7 +6,16 @@ IQLabelView is used to add text overlay and resize and rotate it with single fin
 
 ## How to install it?
 
-Just import IQLabelView/ folder with all the .m, .h, and .bundle files to your project.
+[CocoaPods](http://cocoapods.org) is the easiest way to install IQLabelView. Run ```pod search IQLabelView``` to search for the latest version. Then, copy and paste the ```pod``` line to your ```Podfile```. Your podfile should look like:
+
+```
+platform :ios, '7.0'
+pod 'IQLabelView', '~> X.Y.Z'
+```
+
+Finally, install it by running ```pod install```.
+
+If you don't use CocoaPods, just import IQLabelView/ folder with all the .m, .h, and .bundle files to your project.
 
 ## Reference
 
