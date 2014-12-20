@@ -12,7 +12,7 @@ Just import IQLabelView/ folder with all the .m, .h, and .bundle files to your p
 
 Inspired by 
 
-- [IQStickerView](httsp://github.com/hackifftekhar/IQStickerView)
+- [IQStickerView](https://github.com/hackiftekhar/IQStickerView)
 - [ZDStickerView](https://github.com/zedoul/ZDStickerView)
 - [SPUserResizableView](https://github.com/spoletto/SPUserResizableView)
 
