@@ -114,7 +114,6 @@ static IQLabelView *lastTouchedView;
         [closeView setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin)];
         closeView.backgroundColor = [UIColor whiteColor];
         closeView.layer.cornerRadius = _globalInset - 5;
-        //closeView.image = [UIImage imageNamed:@"sticker_close"];
         closeView.userInteractionEnabled = YES;
         [self addSubview:closeView];
         
@@ -123,13 +122,11 @@ static IQLabelView *lastTouchedView;
         [rotateView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin)];
         rotateView.backgroundColor = [UIColor whiteColor];
         rotateView.layer.cornerRadius = _globalInset - 5;
-        //rotateView.image = [UIImage imageNamed:@"sticker_rotate"];
         rotateView.contentMode = UIViewContentModeCenter;
         rotateView.userInteractionEnabled = YES;
         [self addSubview:rotateView];
 
-        UILongPressGestureRecognizer *moveGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(moveGesture:)];
-        [moveGesture setMinimumPressDuration:0.06];
+        UIPanGestureRecognizer *moveGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveGesture:)];
         [self addGestureRecognizer:moveGesture];
         
         UITapGestureRecognizer *singleTapShowHide = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contentTapped:)];
@@ -138,8 +135,7 @@ static IQLabelView *lastTouchedView;
         UITapGestureRecognizer *closeTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeTap:)];
         [closeView addGestureRecognizer:closeTap];
         
-        UILongPressGestureRecognizer *panRotateGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(rotateViewPanGesture:)];
-        [panRotateGesture setMinimumPressDuration:0];
+        UIPanGestureRecognizer *panRotateGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotateViewPanGesture:)];
         [rotateView addGestureRecognizer:panRotateGesture];
         
         [moveGesture requireGestureRecognizerToFail:closeTap];
