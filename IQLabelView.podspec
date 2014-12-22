@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name               = "IQLabelView"
-  spec.version            = "0.0.4"
+  spec.version            = "0.1.0"
   spec.summary            = "IQLabelView is used to add text overlay and resize and rotate it with single finger."
 
   spec.homepage           = "https://github.com/kcandr/IQLabelView"
