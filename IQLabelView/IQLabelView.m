@@ -387,6 +387,8 @@ static IQLabelView *lastTouchedView;
     if([_delegate respondsToSelector:@selector(labelViewDidStartEditing:)]) {
         [_delegate labelViewDidStartEditing:self];
     }
+    [self contentTapped:nil];
+    [_textView adjustsWidthToFillItsContents];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
