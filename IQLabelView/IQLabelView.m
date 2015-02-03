@@ -146,7 +146,8 @@ static IQLabelView *lastTouchedView;
         [self setCloseImage:[UIImage imageNamed:@"IQLabelView.bundle/sticker_close.png"]];
         [self setRotateImage:[UIImage imageNamed:@"IQLabelView.bundle/sticker_resize.png"]];
         
-        [self hideEditingHandles];
+        //[self hideEditingHandles];
+        [self showEditingHandles];
      }
     return self;
 }
@@ -382,12 +383,21 @@ static IQLabelView *lastTouchedView;
 
 #pragma mark - UITextField Delegate
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (_isShowingEditingHandles) {
+        return YES;
+    }
+    [self contentTapped:nil];
+    return NO;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if([_delegate respondsToSelector:@selector(labelViewDidStartEditing:)]) {
         [_delegate labelViewDidStartEditing:self];
     }
-    [self contentTapped:nil];
+    //[self contentTapped:nil];
     [_textView adjustsWidthToFillItsContents];
 }
 
