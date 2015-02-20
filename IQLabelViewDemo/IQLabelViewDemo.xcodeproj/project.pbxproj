@@ -118,7 +118,7 @@
 				8BE2158A1A45902D006EC5A5 /* Supporting Files */,
 			);
 			path = IQLabelViewDemoTests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		8BE2158A1A45902D006EC5A5 /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -436,6 +436,7 @@
 				8BE215921A45902D006EC5A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8BE215931A45902D006EC5A5 /* Build configuration list for PBXNativeTarget "IQLabelViewDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -444,6 +445,7 @@
 				8BE215951A45902D006EC5A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

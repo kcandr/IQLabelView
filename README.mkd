@@ -2,7 +2,7 @@
 
 IQLabelView is used to add text overlay and resize and rotate it with single finger.
 
-![IQLabelView screenshot](https://leto21d.storage.yandex.net/rdisk/8983eed125d91c6b795f0ab3c22f854c/mpfs/OMS85JPXtdNSuzYT7PvF-gcc9DdXiI7-bBcfaQrL2f3tOC6vn__IH9E8e_gGsafXixMXAK2XbEMMkWlfigpdew==?uid=0&filename=example.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&rtoken=99d5cad93c10728f5c529857dbbbaa43&rtimestamp=549574e1&force_default=no)
+![IQLabelView screenshot](https://cloud.githubusercontent.com/assets/1710081/6282634/3fc18b22-b8e9-11e4-894f-6ed06e1c322c.png)
 
 ## How to install it?
 

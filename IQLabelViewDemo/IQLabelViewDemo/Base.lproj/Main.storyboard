@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C81f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -13,11 +13,32 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fJH-th-L4H">
+                                <rect key="frame" x="0.0" y="58" width="320" height="320"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="hyG-a4-VOl"/>
+                                    <constraint firstAttribute="height" constant="320" id="uYy-dV-XOj"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwU-TK-S3H">
+                                <rect key="frame" x="164" y="20" width="140" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="DvR-A5-wv6"/>
+                                    <constraint firstAttribute="width" constant="140" id="Sbx-t2-w0C"/>
+                                </constraints>
+                                <state key="normal" title="Save to Photo Roll">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveImage" destination="vXZ-lx-hvc" eventType="touchUpInside" id="iL0-4I-0f4"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wDj-Wl-Xgn">
-                                <rect key="frame" x="262" y="20" width="77" height="30"/>
+                                <rect key="frame" x="16" y="20" width="77" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="1LT-aV-BSn"/>
                                     <constraint firstAttribute="width" constant="77" id="w3B-9f-WI9"/>
@@ -34,9 +55,23 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wDj-Wl-Xgn" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="DPw-Q2-CcJ"/>
+                            <constraint firstItem="wDj-Wl-Xgn" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="LHX-Ez-mPa"/>
+                            <constraint firstItem="gwU-TK-S3H" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="RGU-Ei-i7q"/>
+                            <constraint firstItem="fJH-th-L4H" firstAttribute="top" secondItem="wDj-Wl-Xgn" secondAttribute="bottom" constant="8" id="Ydn-dH-30K"/>
                             <constraint firstAttribute="centerX" secondItem="wDj-Wl-Xgn" secondAttribute="centerX" id="ZHG-9H-iB0"/>
+                            <constraint firstAttribute="centerX" secondItem="fJH-th-L4H" secondAttribute="centerX" id="bNe-hs-CIk"/>
+                            <constraint firstAttribute="trailing" secondItem="gwU-TK-S3H" secondAttribute="trailing" constant="16" id="okC-Vr-8D5"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="ZHG-9H-iB0"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="imageView" destination="fJH-th-L4H" id="yFj-7g-VxA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>

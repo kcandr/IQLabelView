@@ -13,6 +13,8 @@
     NSMutableArray *labels;
 }
 
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
+
 @end
 
 @implementation ViewController
@@ -22,6 +24,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     [self.view setBackgroundColor:[UIColor colorWithRed:88/255.0 green:173/255.0 blue:227/255.0 alpha:1.0]];
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchOutside:)]];
+    [self.imageView setImage:[UIImage imageNamed:@"image"]];
+//    [self.imageView ];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,13 +36,14 @@
 - (IBAction)addLabel
 {
     [currentlyEditingLabel hideEditingHandles];
-    CGRect labelFrame = CGRectMake(CGRectGetMidX(self.view.frame) - arc4random() % 150,
-                                   CGRectGetMidY(self.view.frame) - arc4random() % 200,
+    CGRect labelFrame = CGRectMake(CGRectGetMidX(self.imageView.frame) - arc4random() % 150,
+                                   CGRectGetMidY(self.imageView.frame) - arc4random() % 200,
                                    60, 50);
     UITextField *aLabel = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [aLabel setClipsToBounds:YES];
     [aLabel setAutoresizingMask:(UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin)];
     [aLabel setText:@""];
+    [aLabel setTextColor:[UIColor whiteColor]];
     [aLabel sizeToFit];
     
     IQLabelView *labelView = [[IQLabelView alloc] initWithFrame:labelFrame];
@@ -53,6 +58,27 @@
     
     currentlyEditingLabel = labelView;
     [labels addObject:labelView];
+}
+
+- (IBAction)saveImage
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        UIImageWriteToSavedPhotosAlbum([self visibleImage], nil, nil, nil);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Saved to Photo Roll");
+        });
+    });
+}
+
+- (UIImage *)visibleImage
+{
+    UIGraphicsBeginImageContextWithOptions(self.imageView.bounds.size, YES, self.imageView.image.scale);
+    NSLog(@"%f", self.imageView.frame.origin.y);
+    CGContextTranslateCTM(UIGraphicsGetCurrentContext(), CGRectGetMinX(self.imageView.frame), -CGRectGetMinY(self.imageView.frame));
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *visibleViewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return visibleViewImage;
 }
 
 #pragma mark - Gesture 
