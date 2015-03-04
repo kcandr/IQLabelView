@@ -8,29 +8,35 @@
 
 @interface IQLabelView : UIView<UIGestureRecognizerDelegate, UITextFieldDelegate>
 {
+    UITextField *textView;
     UIImageView *rotateView;
     UIImageView *closeView;
 
-    BOOL _isShowingEditingHandles;
+    BOOL isShowingEditingHandles;
 }
 
-@property (assign, nonatomic) UITextField *textView;
+@property (assign, nonatomic) UIColor *textColor;
+@property (assign, nonatomic) UIColor *borderColor;
+
 @property (assign, nonatomic) NSString *fontName;
 @property (assign, nonatomic) CGFloat fontSize;
+
 @property (assign, nonatomic) UIImage *closeImage;
 @property (assign, nonatomic) UIImage *rotateImage;
 
 @property (unsafe_unretained) id <IQLabelViewDelegate> delegate;
 
-@property(nonatomic, assign) BOOL showContentShadow;    //Default is YES.
-@property(nonatomic, assign) BOOL enableClose;  // default is YES. if set to NO, user can't delete the view
-@property(nonatomic, assign) BOOL enableRotate;  // default is YES. if set to NO, user can't Rotate the view
+@property (assign, nonatomic) BOOL showContentShadow;    //Default is YES.
+@property (assign, nonatomic) BOOL enableClose;          //Default is YES. if set to NO, user can't delete the view
+@property (assign, nonatomic) BOOL enableRotate;         //Default is YES. if set to NO, user can't Rotate the view
 
 //Give call's to refresh. If SuperView is UIScrollView. And it changes it's zoom scale.
 - (void)refresh;
 
 - (void)hideEditingHandles;
 - (void)showEditingHandles;
+
+- (void)setTextField:(UITextField *)field;
 
 @end
 

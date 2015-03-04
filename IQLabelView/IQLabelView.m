@@ -36,12 +36,11 @@ CG_INLINE CGSize CGAffineTransformGetScale(CGAffineTransform t)
     return CGSizeMake(sqrt(t.a * t.a + t.c * t.c), sqrt(t.b * t.b + t.d * t.d)) ;
 }
 
-
 static IQLabelView *lastTouchedView;
 
 @implementation IQLabelView
 {
-    CGFloat _globalInset;
+    CGFloat globalInset;
 
     CGRect initialBounds;
     CGFloat initialDistance;
@@ -60,15 +59,14 @@ static IQLabelView *lastTouchedView;
     CAShapeLayer *border;
 }
 
-@synthesize textView = _textView;
-@synthesize fontName = _fontName, fontSize = _fontSize;
-@synthesize enableClose = _enableClose;
-@synthesize enableRotate = _enableRotate;
-@synthesize delegate = _delegate;
-@synthesize showContentShadow = _showContentShadow;
-@synthesize closeImage = _closeImage, rotateImage = _rotateImage;
+@synthesize textColor = textColor, borderColor = borderColor;
+@synthesize fontName = fontName, fontSize = fontSize;
+@synthesize enableClose = enableClose, enableRotate = enableRotate;
+@synthesize delegate = delegate;
+@synthesize showContentShadow = showContentShadow;
+@synthesize closeImage = closeImage, rotateImage = rotateImage;
 
--(void)refresh
+- (void)refresh
 {
     if (self.superview) {
         CGSize scale = CGAffineTransformGetScale(self.superview.transform);
@@ -76,8 +74,8 @@ static IQLabelView *lastTouchedView;
         [closeView setTransform:CGAffineTransformInvert(t)];
         [rotateView setTransform:CGAffineTransformInvert(t)];
         
-        if (_isShowingEditingHandles) {
-            [_textView.layer addSublayer:border];
+        if (isShowingEditingHandles) {
+            [textView.layer addSublayer:border];
         } else {
             [border removeFromSuperlayer];
         }
@@ -98,30 +96,29 @@ static IQLabelView *lastTouchedView;
 
 - (id)initWithFrame:(CGRect)frame
 {
-    /*(1+_globalInset*2)*/
     if (frame.size.width < (1+12*2))     frame.size.width = 25;
-    if (frame.size.height < (1+12*2))   frame.size.height = 25;
+    if (frame.size.height < (1+12*2))    frame.size.height = 25;
  
     self = [super initWithFrame:frame];
     if (self) {
-        _globalInset = 12;
+        globalInset = 12;
         
-        //        self = [[UIView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];
         self.backgroundColor = [UIColor clearColor];
+        borderColor = [UIColor redColor];
         
         //Close button view which is in top left corner
-        closeView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, _globalInset*2, _globalInset*2)];
+        closeView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, globalInset*2, globalInset*2)];
         [closeView setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin)];
         closeView.backgroundColor = [UIColor whiteColor];
-        closeView.layer.cornerRadius = _globalInset - 5;
+        closeView.layer.cornerRadius = globalInset - 5;
         closeView.userInteractionEnabled = YES;
         [self addSubview:closeView];
         
          //Rotating view which is in bottom right corner
-        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width-_globalInset*2, self.bounds.size.height-_globalInset*2, _globalInset*2, _globalInset*2)];
+        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width-globalInset*2, self.bounds.size.height-globalInset*2, globalInset*2, globalInset*2)];
         [rotateView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin)];
         rotateView.backgroundColor = [UIColor whiteColor];
-        rotateView.layer.cornerRadius = _globalInset - 5;
+        rotateView.layer.cornerRadius = globalInset - 5;
         rotateView.contentMode = UIViewContentModeCenter;
         rotateView.userInteractionEnabled = YES;
         [self addSubview:rotateView];
@@ -146,7 +143,6 @@ static IQLabelView *lastTouchedView;
         [self setCloseImage:[UIImage imageNamed:@"IQLabelView.bundle/sticker_close.png"]];
         [self setRotateImage:[UIImage imageNamed:@"IQLabelView.bundle/sticker_resize.png"]];
         
-        //[self hideEditingHandles];
         [self showEditingHandles];
      }
     return self;
@@ -154,33 +150,33 @@ static IQLabelView *lastTouchedView;
 
 - (void)layoutSubviews
 {
-    if (_textView) {
-        border.path = [UIBezierPath bezierPathWithRect:_textView.bounds].CGPath;
-        border.frame = _textView.bounds;
+    if (textView) {
+        border.path = [UIBezierPath bezierPathWithRect:textView.bounds].CGPath;
+        border.frame = textView.bounds;
     }
 }
 
 #pragma mark - Set Control Buttons
 
-- (void)setEnableClose:(BOOL)enableClose
+- (void)setEnableClose:(BOOL)value
 {
-    _enableClose = enableClose;
-    [closeView setHidden:!_enableClose];
-    [closeView setUserInteractionEnabled:_enableClose];
+    enableClose = value;
+    [closeView setHidden:!enableClose];
+    [closeView setUserInteractionEnabled:enableClose];
 }
 
-- (void)setEnableRotate:(BOOL)enableRotate
+- (void)setEnableRotate:(BOOL)value
 {
-    _enableRotate = enableRotate;
-    [rotateView setHidden:!_enableRotate];
-    [rotateView setUserInteractionEnabled:_enableRotate];
+    enableRotate = value;
+    [rotateView setHidden:!enableRotate];
+    [rotateView setUserInteractionEnabled:enableRotate];
 }
 
-- (void)setShowContentShadow:(BOOL)showContentShadow
+- (void)setShowContentShadow:(BOOL)showShadow
 {
-    _showContentShadow = showContentShadow;
+    showContentShadow = showShadow;
     
-    if (_showContentShadow) {
+    if (showContentShadow) {
         [self.layer setShadowColor:[UIColor blackColor].CGColor];
         [self.layer setShadowOffset:CGSizeMake(0, 5)];
         [self.layer setShadowOpacity:1.0];
@@ -193,53 +189,65 @@ static IQLabelView *lastTouchedView;
     }
 }
 
-- (void)setCloseImage:(UIImage *)closeImage
+- (void)setCloseImage:(UIImage *)image
 {
-    _closeImage = closeImage;
-    [closeView setImage:_closeImage];
+    closeImage = image;
+    [closeView setImage:closeImage];
 }
 
-- (void)setRotateImage:(UIImage *)rotateImage
+- (void)setRotateImage:(UIImage *)image
 {
-    _rotateImage = rotateImage;
-    [rotateView setImage:_rotateImage];
+    rotateImage = image;
+    [rotateView setImage:rotateImage];
 }
 
 #pragma mark - Set Text Field
 
-- (void)setTextView:(UITextField *)textView
+- (void)setTextField:(UITextField *)field
 {
-    [_textView removeFromSuperview];
+    [textView removeFromSuperview];
     
-    _textView = textView;
+    textView = field;
     
-    _textView.frame = CGRectInset(self.bounds, _globalInset, _globalInset);
+    textView.frame = CGRectInset(self.bounds, globalInset, globalInset);
     
-    [_textView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight)];
-    _textView.delegate = self;
-    _textView.backgroundColor = [UIColor clearColor];
-    _textView.tintColor = [UIColor redColor];
-    [_textView becomeFirstResponder];
+    [textView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight)];
+    textView.delegate = self;
+    textView.backgroundColor = [UIColor clearColor];
+    textView.tintColor = [UIColor redColor];
+    [textView becomeFirstResponder];
     
     border = [CAShapeLayer layer];
-    border.strokeColor = [UIColor redColor].CGColor;
+    border.strokeColor = borderColor.CGColor;
     border.fillColor = nil;
     border.lineDashPattern = @[@4, @3];
     
-    [self insertSubview:_textView atIndex:0];
+    [self insertSubview:textView atIndex:0];
 }
 
-- (void)setFontName:(NSString *)fontName
+- (void)setFontName:(NSString *)name
 {
-    _fontName = fontName;
-    _textView.font = [UIFont fontWithName:_fontName size:_fontSize];
-    [_textView adjustsWidthToFillItsContents];
+    fontName = name;
+    textView.font = [UIFont fontWithName:fontName size:fontSize];
+    [textView adjustsWidthToFillItsContents];
 }
 
-- (void)setFontSize:(CGFloat)fontSize
+- (void)setFontSize:(CGFloat)size
 {
-    _fontSize = fontSize;
-    _textView.font = [UIFont fontWithName:_fontName size:_fontSize];
+    fontSize = size;
+    textView.font = [UIFont fontWithName:fontName size:fontSize];
+}
+
+- (void)setTextColor:(UIColor *)color
+{
+    textColor = color;
+    textView.textColor = textColor;
+}
+
+- (void)setBorderColor:(UIColor *)color
+{
+    borderColor = color;
+    border.strokeColor = borderColor.CGColor;
 }
 
 #pragma mark - Bounds
@@ -248,17 +256,17 @@ static IQLabelView *lastTouchedView;
 {
     lastTouchedView = nil;
     
-    _isShowingEditingHandles = NO;
+    isShowingEditingHandles = NO;
     
-    if (_enableClose)       closeView.hidden = YES;
-    if (_enableRotate)      rotateView.hidden = YES;
+    if (enableClose)       closeView.hidden = YES;
+    if (enableRotate)      rotateView.hidden = YES;
     
-    [_textView resignFirstResponder];
+    [textView resignFirstResponder];
     
     [self refresh];
     
-    if([_delegate respondsToSelector:@selector(labelViewDidHideEditingHandles:)]) {
-        [_delegate labelViewDidHideEditingHandles:self];
+    if([delegate respondsToSelector:@selector(labelViewDidHideEditingHandles:)]) {
+        [delegate labelViewDidHideEditingHandles:self];
     }
 }
 
@@ -266,17 +274,17 @@ static IQLabelView *lastTouchedView;
 {
     [lastTouchedView hideEditingHandles];
     
-    _isShowingEditingHandles = YES;
+    isShowingEditingHandles = YES;
     
     lastTouchedView = self;
     
-    if (_enableClose)       closeView.hidden = NO;
-    if (_enableRotate)      rotateView.hidden = NO;
+    if (enableClose)       closeView.hidden = NO;
+    if (enableRotate)      rotateView.hidden = NO;
     
     [self refresh];
     
-    if([_delegate respondsToSelector:@selector(labelViewDidShowEditingHandles:)]) {
-        [_delegate labelViewDidShowEditingHandles:self];
+    if([delegate respondsToSelector:@selector(labelViewDidShowEditingHandles:)]) {
+        [delegate labelViewDidShowEditingHandles:self];
     }
 }
 
@@ -284,7 +292,7 @@ static IQLabelView *lastTouchedView;
 
 - (void)contentTapped:(UITapGestureRecognizer*)tapGesture
 {
-    if (_isShowingEditingHandles) {
+    if (isShowingEditingHandles) {
         [self hideEditingHandles];
         [self.superview bringSubviewToFront:self];
     } else {
@@ -296,14 +304,14 @@ static IQLabelView *lastTouchedView;
 {
     [self removeFromSuperview];
     
-    if([_delegate respondsToSelector:@selector(labelViewDidClose:)]) {
-        [_delegate labelViewDidClose:self];
+    if([delegate respondsToSelector:@selector(labelViewDidClose:)]) {
+        [delegate labelViewDidClose:self];
     }
 }
 
 -(void)moveGesture:(UIPanGestureRecognizer *)recognizer
 {
-    if (!_isShowingEditingHandles) {
+    if (!isShowingEditingHandles) {
         [self showEditingHandles];
     }
     touchLocation = [recognizer locationInView:self.superview];
@@ -316,20 +324,20 @@ static IQLabelView *lastTouchedView;
 
         beginBounds = self.bounds;
         
-        if([_delegate respondsToSelector:@selector(labelViewDidBeginEditing:)]) {
-            [_delegate labelViewDidBeginEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidBeginEditing:)]) {
+            [delegate labelViewDidBeginEditing:self];
         }
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
         [self setCenter:CGPointMake(beginningCenter.x+(touchLocation.x-beginningPoint.x), beginningCenter.y+(touchLocation.y-beginningPoint.y))];
         
-        if([_delegate respondsToSelector:@selector(labelViewDidChangeEditing:)]) {
-            [_delegate labelViewDidChangeEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidChangeEditing:)]) {
+            [delegate labelViewDidChangeEditing:self];
         }
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         [self setCenter:CGPointMake(beginningCenter.x+(touchLocation.x-beginningPoint.x), beginningCenter.y+(touchLocation.y-beginningPoint.y))];
     
-        if([_delegate respondsToSelector:@selector(labelViewDidEndEditing:)]) {
-            [_delegate labelViewDidEndEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidEndEditing:)]) {
+            [delegate labelViewDidEndEditing:self];
         }
     }
 
@@ -348,14 +356,13 @@ static IQLabelView *lastTouchedView;
         initialBounds = self.bounds;
         initialDistance = CGPointGetDistance(center, touchLocation);
        
-        if([_delegate respondsToSelector:@selector(labelViewDidBeginEditing:)]) {
-            [_delegate labelViewDidBeginEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidBeginEditing:)]) {
+            [delegate labelViewDidBeginEditing:self];
         }
     } else if ([recognizer state] == UIGestureRecognizerStateChanged) {
         float ang = atan2(touchLocation.y-center.y, touchLocation.x-center.x);
         
         float angleDiff = deltaAngle - ang;
-//        float angleDiff = -ang;
         [self setTransform:CGAffineTransformMakeRotation(-angleDiff)];
         [self setNeedsDisplay];
         
@@ -364,19 +371,19 @@ static IQLabelView *lastTouchedView;
         
         CGRect scaleRect = CGRectScale(initialBounds, scale, scale);
  
-        if (scaleRect.size.width >= (1+_globalInset*2 + 20) && scaleRect.size.height >= (1+_globalInset*2 + 20)) {
-            if (_fontSize < 100 || CGRectGetWidth(scaleRect) < CGRectGetWidth(self.bounds)) {
-                [_textView adjustsFontSizeToFillRect:scaleRect];
+        if (scaleRect.size.width >= (1+globalInset*2 + 20) && scaleRect.size.height >= (1+globalInset*2 + 20)) {
+            if (fontSize < 100 || CGRectGetWidth(scaleRect) < CGRectGetWidth(self.bounds)) {
+                [textView adjustsFontSizeToFillRect:scaleRect];
                 [self setBounds:scaleRect];
             }
         }
         
-        if([_delegate respondsToSelector:@selector(labelViewDidChangeEditing:)]) {
-            [_delegate labelViewDidChangeEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidChangeEditing:)]) {
+            [delegate labelViewDidChangeEditing:self];
         }
     } else if ([recognizer state] == UIGestureRecognizerStateEnded) {
-        if([_delegate respondsToSelector:@selector(labelViewDidEndEditing:)]) {
-            [_delegate labelViewDidEndEditing:self];
+        if([delegate respondsToSelector:@selector(labelViewDidEndEditing:)]) {
+            [delegate labelViewDidEndEditing:self];
         }
     }
 }
@@ -385,7 +392,7 @@ static IQLabelView *lastTouchedView;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (_isShowingEditingHandles) {
+    if (isShowingEditingHandles) {
         return YES;
     }
     [self contentTapped:nil];
@@ -394,19 +401,19 @@ static IQLabelView *lastTouchedView;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if([_delegate respondsToSelector:@selector(labelViewDidStartEditing:)]) {
-        [_delegate labelViewDidStartEditing:self];
+    if([delegate respondsToSelector:@selector(labelViewDidStartEditing:)]) {
+        [delegate labelViewDidStartEditing:self];
     }
-    //[self contentTapped:nil];
-    [_textView adjustsWidthToFillItsContents];
+    
+    [textView adjustsWidthToFillItsContents];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (!_isShowingEditingHandles) {
+    if (!isShowingEditingHandles) {
         [self showEditingHandles];
     }
-    [_textView adjustsWidthToFillItsContents];
+    [textView adjustsWidthToFillItsContents];
     return YES;
 }
 

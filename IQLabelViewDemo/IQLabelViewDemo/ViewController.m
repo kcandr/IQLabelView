@@ -14,6 +14,7 @@
 }
 
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) NSArray *colors;
 
 @end
 
@@ -21,11 +22,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.colors = [NSArray arrayWithObjects:[UIColor whiteColor], [UIColor redColor], [UIColor blueColor], nil];
+    
+    UIBarButtonItem *addLabelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                    target:self action:@selector(addLabel)];
+
+    UIBarButtonItem *refreshColorButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                        target:self action:@selector(changeColor)];
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                                target:self action:@selector(saveImage)];
+    self.navigationItem.leftBarButtonItem = addLabelButton;
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:saveButton, refreshColorButton, nil];
+    
     [self.view setBackgroundColor:[UIColor colorWithRed:88/255.0 green:173/255.0 blue:227/255.0 alpha:1.0]];
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchOutside:)]];
     [self.imageView setImage:[UIImage imageNamed:@"image"]];
-//    [self.imageView ];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,7 +45,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)addLabel
+- (void)addLabel
 {
     [currentlyEditingLabel hideEditingHandles];
     CGRect labelFrame = CGRectMake(CGRectGetMidX(self.imageView.frame) - arc4random() % 150,
@@ -50,7 +62,7 @@
     [labelView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
     labelView.delegate = self;
     [labelView setShowContentShadow:NO];
-    [labelView setTextView:aLabel];
+    [labelView setTextField:aLabel];
     [labelView setFontName:@"Baskerville-BoldItalic"];
     [labelView setFontSize:21.0];
     [labelView sizeToFit];
@@ -60,7 +72,7 @@
     [labels addObject:labelView];
 }
 
-- (IBAction)saveImage
+- (void)saveImage
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         UIImageWriteToSavedPhotosAlbum([self visibleImage], nil, nil, nil);
@@ -68,6 +80,11 @@
             NSLog(@"Saved to Photo Roll");
         });
     });
+}
+
+- (void)changeColor
+{
+    [currentlyEditingLabel setTextColor:[self.colors objectAtIndex:arc4random() % 3]];
 }
 
 - (UIImage *)visibleImage
