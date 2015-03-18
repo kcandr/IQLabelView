@@ -9,7 +9,6 @@
 
 @interface UITextField (DynamicFontSize)
 
-- (void)adjustsFontSizeToFillItsContents;
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds;
 - (void)adjustsWidthToFillItsContents;
 

@@ -55,6 +55,10 @@
     [aLabel setClipsToBounds:YES];
     [aLabel setAutoresizingMask:(UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin)];
     [aLabel setText:@""];
+    if (arc4random() % 2 == 0) {
+        [aLabel setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Placeholder", nil)
+                                                                         attributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.75] }]];
+    }
     [aLabel setTextColor:[UIColor whiteColor]];
     [aLabel sizeToFit];
     

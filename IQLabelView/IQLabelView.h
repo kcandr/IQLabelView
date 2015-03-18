@@ -37,6 +37,8 @@
 - (void)showEditingHandles;
 
 - (void)setTextField:(UITextField *)field;
+- (void)setTextAlpha:(CGFloat)alpha;
+- (CGFloat)textAlpha;
 
 @end
 

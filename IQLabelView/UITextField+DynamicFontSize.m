@@ -11,29 +11,9 @@
 #define CATEGORY_DYNAMIC_FONT_SIZE_MAXIMUM_VALUE 101
 #define CATEGORY_DYNAMIC_FONT_SIZE_MINIMUM_VALUE 9
 
-- (void)adjustsFontSizeToFillItsContents
-{
-    NSString *text = self.text;
-    
-    for (int i = CATEGORY_DYNAMIC_FONT_SIZE_MAXIMUM_VALUE; i > CATEGORY_DYNAMIC_FONT_SIZE_MINIMUM_VALUE; i--) {
-        UIFont *font = [UIFont fontWithName:self.font.fontName size:(CGFloat)i];
-        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
-                                                                             attributes:@{ NSFontAttributeName : font }];
-        
-        CGRect rectSize = [attributedText boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.frame), CGFLOAT_MAX)
-                                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                                       context:nil];
-        
-        if (CGRectGetHeight(rectSize) <= CGRectGetHeight(self.frame)) {
-            ((IQLabelView *)self.superview).fontSize = (CGFloat)i-1;
-            break;
-        }
-    }
-}
-
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds
 {
-    NSString *text = self.text;
+    NSString *text = (![self.text isEqualToString:@""] || !self.placeholder) ? self.text : self.placeholder;
     
     for (int i = CATEGORY_DYNAMIC_FONT_SIZE_MAXIMUM_VALUE; i > CATEGORY_DYNAMIC_FONT_SIZE_MINIMUM_VALUE; i--) {
         UIFont *font = [UIFont fontWithName:self.font.fontName size:(CGFloat)i];
@@ -53,7 +33,7 @@
 
 - (void)adjustsWidthToFillItsContents
 {
-    NSString *text = self.text;
+    NSString *text = (![self.text isEqualToString:@""] || !self.placeholder) ? self.text : self.placeholder;
     UIFont *font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
                                                                          attributes:@{ NSFontAttributeName : font }];

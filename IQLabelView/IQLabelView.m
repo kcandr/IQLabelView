@@ -250,6 +250,16 @@ static IQLabelView *lastTouchedView;
     border.strokeColor = borderColor.CGColor;
 }
 
+- (void)settextAlpha:(CGFloat)alpha
+{
+    textView.alpha = alpha;
+}
+
+- (CGFloat)textAlpha
+{
+    return textView.alpha;
+}
+
 #pragma mark - Bounds
 
 - (void)hideEditingHandles
