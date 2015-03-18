@@ -250,7 +250,7 @@ static IQLabelView *lastTouchedView;
     border.strokeColor = borderColor.CGColor;
 }
 
-- (void)settextAlpha:(CGFloat)alpha
+- (void)setTextAlpha:(CGFloat)alpha
 {
     textView.alpha = alpha;
 }
