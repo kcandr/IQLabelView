@@ -48,8 +48,8 @@
 - (void)addLabel
 {
     [currentlyEditingLabel hideEditingHandles];
-    CGRect labelFrame = CGRectMake(CGRectGetMidX(self.imageView.frame) - arc4random() % 150,
-                                   CGRectGetMidY(self.imageView.frame) - arc4random() % 200,
+    CGRect labelFrame = CGRectMake(CGRectGetMidX(self.imageView.frame) - arc4random() % 20,
+                                   CGRectGetMidY(self.imageView.frame) - arc4random() % 20,
                                    60, 50);
     UITextField *aLabel = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [aLabel setClipsToBounds:YES];
@@ -66,11 +66,14 @@
     [labelView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
     labelView.delegate = self;
     [labelView setShowContentShadow:NO];
+    [labelView setEnableMoveRestriction:YES];
     [labelView setTextField:aLabel];
     [labelView setFontName:@"Baskerville-BoldItalic"];
     [labelView setFontSize:21.0];
     [labelView sizeToFit];
-    [self.view addSubview:labelView];
+//    [self.view addSubview:labelView];
+    [self.imageView addSubview:labelView];
+    [self.imageView setUserInteractionEnabled:YES];
     
     currentlyEditingLabel = labelView;
     [labels addObject:labelView];
@@ -93,8 +96,7 @@
 
 - (UIImage *)visibleImage
 {
-    UIGraphicsBeginImageContextWithOptions(self.imageView.bounds.size, YES, self.imageView.image.scale);
-    NSLog(@"%f", self.imageView.frame.origin.y);
+    UIGraphicsBeginImageContextWithOptions(self.imageView.bounds.size, YES, [UIScreen mainScreen].scale);
     CGContextTranslateCTM(UIGraphicsGetCurrentContext(), CGRectGetMinX(self.imageView.frame), -CGRectGetMinY(self.imageView.frame));
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *visibleViewImage = UIGraphicsGetImageFromCurrentImageContext();

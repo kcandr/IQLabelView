@@ -38,6 +38,10 @@ CG_INLINE CGSize CGAffineTransformGetScale(CGAffineTransform t)
 
 static IQLabelView *lastTouchedView;
 
+@interface IQLabelView () <UIGestureRecognizerDelegate, UITextFieldDelegate>
+
+@end
+
 @implementation IQLabelView
 {
     CGFloat globalInset;
@@ -61,7 +65,7 @@ static IQLabelView *lastTouchedView;
 
 @synthesize textColor = textColor, borderColor = borderColor;
 @synthesize fontName = fontName, fontSize = fontSize;
-@synthesize enableClose = enableClose, enableRotate = enableRotate;
+@synthesize enableClose = enableClose, enableRotate = enableRotate, enableMoveRestriction;
 @synthesize delegate = delegate;
 @synthesize showContentShadow = showContentShadow;
 @synthesize closeImage = closeImage, rotateImage = rotateImage;
@@ -137,6 +141,7 @@ static IQLabelView *lastTouchedView;
         
         [moveGesture requireGestureRecognizerToFail:closeTap];
         
+        [self setEnableMoveRestriction:NO];
         [self setEnableClose:YES];
         [self setEnableRotate:YES];
         [self setShowContentShadow:YES];
@@ -329,29 +334,49 @@ static IQLabelView *lastTouchedView;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         beginningPoint = touchLocation;
         beginningCenter = self.center;
- 
-        [self setCenter:CGPointMake(beginningCenter.x+(touchLocation.x-beginningPoint.x), beginningCenter.y+(touchLocation.y-beginningPoint.y))];
-
+        
+        [self setCenter:[self estimatedCenter]];
         beginBounds = self.bounds;
         
         if([delegate respondsToSelector:@selector(labelViewDidBeginEditing:)]) {
             [delegate labelViewDidBeginEditing:self];
         }
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {
-        [self setCenter:CGPointMake(beginningCenter.x+(touchLocation.x-beginningPoint.x), beginningCenter.y+(touchLocation.y-beginningPoint.y))];
+        [self setCenter:[self estimatedCenter]];
         
         if([delegate respondsToSelector:@selector(labelViewDidChangeEditing:)]) {
             [delegate labelViewDidChangeEditing:self];
         }
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        [self setCenter:CGPointMake(beginningCenter.x+(touchLocation.x-beginningPoint.x), beginningCenter.y+(touchLocation.y-beginningPoint.y))];
-    
+        [self setCenter:[self estimatedCenter]];
+        
         if([delegate respondsToSelector:@selector(labelViewDidEndEditing:)]) {
             [delegate labelViewDidEndEditing:self];
         }
     }
 
     prevPoint = touchLocation;
+}
+
+- (CGPoint)estimatedCenter
+{
+    CGPoint newCenter;
+    CGFloat newCenterX = beginningCenter.x + (touchLocation.x - beginningPoint.x);
+    CGFloat newCenterY = beginningCenter.y + (touchLocation.y - beginningPoint.y);
+    if (enableMoveRestriction) {
+        if (!(newCenterX - 0.5 * CGRectGetWidth(self.frame) > 0 &&
+            newCenterX + 0.5 * CGRectGetWidth(self.frame) < CGRectGetWidth(self.superview.bounds))) {
+             newCenterX = self.center.x;
+        }
+        if (!(newCenterY - 0.5 * CGRectGetHeight(self.frame) > 0 &&
+            newCenterY + 0.5 * CGRectGetHeight(self.frame) < CGRectGetHeight(self.superview.bounds))) {
+            newCenterY = self.center.y;
+        }
+        newCenter = CGPointMake(newCenterX, newCenterY);
+    } else {
+        newCenter = CGPointMake(newCenterX, newCenterY);
+    }
+    return newCenter;
 }
 
 - (void)rotateViewPanGesture:(UIPanGestureRecognizer *)recognizer
