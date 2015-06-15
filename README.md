@@ -46,6 +46,7 @@ If you don't use CocoaPods, just import IQLabelView/ folder with all the .m, .h,
 @property (nonatomic) BOOL showContentShadow;    //Default is YES.
 @property (nonatomic) BOOL enableClose;          //Default is YES. if set to NO, user can't delete the view
 @property (nonatomic) BOOL enableRotate;         //Default is YES. if set to NO, user can't rotate the view
+@property (nonatomic) BOOL enableMoveRestriction; //Default is NO.
 
 - (void)refresh;
 
