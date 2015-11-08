@@ -51,29 +51,22 @@
     CGRect labelFrame = CGRectMake(CGRectGetMidX(self.imageView.frame) - arc4random() % 20,
                                    CGRectGetMidY(self.imageView.frame) - arc4random() % 20,
                                    60, 50);
-    UITextField *aLabel = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-    [aLabel setClipsToBounds:YES];
-    [aLabel setAutoresizingMask:(UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin)];
-    [aLabel setText:@""];
-    if (arc4random() % 2 == 0) {
-        [aLabel setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Placeholder", nil)
-                                                                         attributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.75] }]];
-    }
-    [aLabel setTextColor:[UIColor whiteColor]];
-    [aLabel sizeToFit];
     
     IQLabelView *labelView = [[IQLabelView alloc] initWithFrame:labelFrame];
-    [labelView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
-    labelView.delegate = self;
-    [labelView setShowContentShadow:NO];
+    [labelView setDelegate:self];
+    [labelView setShowsContentShadow:NO];
     [labelView setEnableMoveRestriction:YES];
-    [labelView setTextField:aLabel];
     [labelView setFontName:@"Baskerville-BoldItalic"];
     [labelView setFontSize:21.0];
-    [labelView sizeToFit];
-//    [self.view addSubview:labelView];
+    
     [self.imageView addSubview:labelView];
     [self.imageView setUserInteractionEnabled:YES];
+    
+    if (arc4random() % 2 == 0) {
+        [labelView setAttributedPlaceholder:[[NSAttributedString alloc]
+                                             initWithString:NSLocalizedString(@"Placeholder", nil)
+                                             attributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.75] }]];
+    }
     
     currentlyEditingLabel = labelView;
     [labels addObject:labelView];

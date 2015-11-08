@@ -8,14 +8,14 @@
 
 @implementation UITextField (DynamicFontSize)
 
-#define CATEGORY_DYNAMIC_FONT_SIZE_MAXIMUM_VALUE 101
-#define CATEGORY_DYNAMIC_FONT_SIZE_MINIMUM_VALUE 9
+static const NSUInteger IQLVMaximumFontSize = 101;
+static const NSUInteger IQLVMinimumFontSize = 9;
 
 - (void)adjustsFontSizeToFillRect:(CGRect)newBounds
 {
     NSString *text = (![self.text isEqualToString:@""] || !self.placeholder) ? self.text : self.placeholder;
     
-    for (int i = CATEGORY_DYNAMIC_FONT_SIZE_MAXIMUM_VALUE; i > CATEGORY_DYNAMIC_FONT_SIZE_MINIMUM_VALUE; i--) {
+    for (NSUInteger i = IQLVMaximumFontSize; i > IQLVMinimumFontSize; i--) {
         UIFont *font = [UIFont fontWithName:self.font.fontName size:(CGFloat)i];
         NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text
                                                                              attributes:@{ NSFontAttributeName : font }];
