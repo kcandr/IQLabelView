@@ -64,12 +64,11 @@ static IQLabelView *lastTouchedView;
     BOOL isShowingEditingHandles;
 }
 
-@synthesize textColor = textColor, borderColor = borderColor;
-@synthesize fontName = fontName, fontSize = fontSize;
-@synthesize enableClose = enableClose, enableRotate, enableMoveRestriction;
-@synthesize delegate = delegate;
-@synthesize showsContentShadow = showsContentShadow;
-@synthesize closeImage = closeImage, rotateImage = rotateImage;
+@synthesize textColor, borderColor;
+@synthesize fontName, fontSize;
+@synthesize enableClose, enableRotate, enableMoveRestriction, showsContentShadow;
+@synthesize delegate;
+@synthesize closeImage, rotateImage;
 
 - (void)refresh
 {
@@ -160,7 +159,7 @@ static IQLabelView *lastTouchedView;
         [self setEnableMoveRestriction:NO];
         [self setEnableClose:YES];
         [self setEnableRotate:YES];
-        [self setShowContentShadow:YES];
+        [self setShowsContentShadow:YES];
         [self setCloseImage:[UIImage imageNamed:@"IQLabelView.bundle/sticker_close.png"]];
         [self setRotateImage:[UIImage imageNamed:@"IQLabelView.bundle/sticker_resize.png"]];
         
@@ -194,7 +193,7 @@ static IQLabelView *lastTouchedView;
     [rotateView setUserInteractionEnabled:enableRotate];
 }
 
-- (void)setShowContentShadow:(BOOL)showShadow
+- (void)setShowsContentShadow:(BOOL)showShadow
 {
     showsContentShadow = showShadow;
     

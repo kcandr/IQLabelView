@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name               = "IQLabelView"
-  spec.version            = "0.2.0"
+  spec.version            = "0.2.1"
   spec.summary            = "IQLabelView is used to add text overlay and resize and rotate it with single finger."
 
   spec.homepage           = "https://github.com/kcandr/IQLabelView"
@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.social_media_url   = "http://twitter.com/kcandr_"
   spec.license            = { :type => "MIT", :file => "LICENSE" }
  
-  spec.source             = { :git => "https://github.com/kcandr/IQLabelView.git", :tag => "0.2.0" }
+  spec.source             = { :git => "https://github.com/kcandr/IQLabelView.git", :tag => "0.2.1" }
   spec.source_files       = "IQLabelView/*.{h,m}"
   spec.resource           = "IQLabelView/IQLabelView.bundle"
 
